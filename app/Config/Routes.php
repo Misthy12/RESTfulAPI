@@ -32,6 +32,13 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+//new route groups
+$routes->group('api',['namespace'=>'App\Controllers\API'],function($routes){
+	$routes->get('profesores', 'Profesores::index');
+	$routes->post('profesores/create', 'Profesores::create');
+	$routes->post('profesores/edit', 'Profesores::edit');
+});
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing
