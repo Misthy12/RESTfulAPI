@@ -70,4 +70,25 @@ class Profesores extends ResourceController
 			return $this->failServerError('Ha ocurrido un error en el servidor');
 		}
 	}
+	public function delete($id = null)
+	{
+		try {
+			if($id==null)
+				return $this->failValidationError('No se se ha pasado ID Valido');
+			$verificarprofesor = $this->model->find($id);
+
+			if($verificarprofesor==null)
+				return $this->failNotFound('No se se ha encontrado un profesor con id: ' .$id);
+			
+			if($this->model->delete($id)):
+				return $this->respondDeleted($verificarprofesor);
+			else:
+				return $this->failServerError('No se Ha Podido borrar el Registro');
+			endif;
+
+		} catch (\Exception $e) {
+			//throw $th;
+			return $this->failServerError('Ha ocurrido un error en el servidor');
+		}
+	}
 }
