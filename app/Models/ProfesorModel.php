@@ -18,7 +18,11 @@ class ProfesorModel extends Model
         'apellido'              => 'required|alpha_numeric_space|min_length[3]|max_length[75]',
         'profesion'             => 'required|alpha_numeric_space|min_length[3]|max_length[3]',
         'telefono'              => 'required|integer|min_length[8]|max_length[9]',
-        'dui'                   => 'required|min_length[10]|max_length[10]', 
+        'dui'                   => 'required|duiRegex', 
+    ];
+
+    protected $validationMessages = [
+        'dui'    => ['duiRegex' => 'El Dui es incorrecto ']
     ];
 
     protected $skipValidation = false;

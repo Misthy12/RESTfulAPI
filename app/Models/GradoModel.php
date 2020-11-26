@@ -16,7 +16,10 @@ class GradoModel extends Model
     protected $validationRules  = [
         'grado'                => 'required|alpha_numeric_space|min_length[3]|max_length[60]',
         'seccion'              => 'required|alpha_numeric_space|min_length[1]|max_length[2]',
-        'profesor_id'          => 'required|integer',
+        'profesor_id'          => 'required|integer|is_valid_profesor',
+    ];
+    protected $validationMessages = [
+        'profesor_id' => ['is_valid_profesor' => 'El Profesor que intenta ingresar no existe.']
     ];
 
     protected $skipValidation = false;
