@@ -36,7 +36,7 @@ $routes->get('/', 'Home::index');
 $routes->group('api',['namespace'=>'App\Controllers\API'],function($routes){
 	$routes->get('profesores', 'Profesores::index');
 	$routes->post('profesores/create', 'Profesores::create');
-	$routes->post('profesores/edit', 'Profesores::edit');
+	$routes->post('profesores/edit(:num)', 'Profesores::edit/$1');
 });
 
 /**
