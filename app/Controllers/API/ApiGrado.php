@@ -11,19 +11,22 @@ class ApiGrado extends ResourceController
 	
 	public function getall($id = null)
 	{
+		///Get Model 
 		$gradoModel = new \App\Models\GradoModel();
 		$profeModel = new \App\Models\ProfesorModel();
 		$studentModel = new \App\Models\EstudianteModel();
 		try {
-			if($id==null)
+			if($id==null)//Verifica que llegue un id
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			
 			$vgrado = $gradoModel->where('id', $id)->first();
 
 			if($vgrado==null)
 				return failNotFound('No se se han encontrado Resultados con id: ' .$id);
-			$Estudiantes = $studentModel->where('grado_id', $id)->select('CONCAT(nombre," ", apellido) as Nombre,genero, carnet')->findAll();
-			$Profesor = $profeModel->where('id', $vgrado['profesor_id'])->select(['CONCAT(nombre," ", apellido) as Nombres', 'profesion','telefono'])->first();
+
+			$Estudiantes = $studentModel->where('grado_id', $id)->select('CONCAT(nombre," ", apellido) as nombre,genero, carnet')->findAll();
+			$Profesor = $profeModel->where('id', $vgrado['profesor_id'])->select(['CONCAT(nombre," ", apellido) as nombre', 'profesion','telefono'])->first();
+			
 			if($vgrado != null):
 				return $this->setResponseFormat('json')->respond(['grado'=>$vgrado['grado'],'seccion'=>$vgrado['seccion'],'Profesor'=>$Profesor,'alumnos'=>$Estudiantes]);
 			else:
