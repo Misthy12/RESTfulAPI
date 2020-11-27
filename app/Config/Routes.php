@@ -32,6 +32,10 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+//Consumo API
+$routes->group('api',['namespace'=>'App\Controllers\API'],function($routes){
+	$routes->get('apigrado/getall', 'Apigrado::getall/$1');
+});
 //new route groups profesor
 $routes->group('api',['namespace'=>'App\Controllers\API'],function($routes){
 	$routes->get('profesores', 'Profesores::index');
@@ -40,6 +44,8 @@ $routes->group('api',['namespace'=>'App\Controllers\API'],function($routes){
 	$routes->put('profesores/update(:num)', 'Profesores::update/$1');
 	$routes->delete('profesores/delete(:num)', 'Profesores::delete/$1');
 });
+
+
 //new route groups Grado
 $routes->group('api',['namespace'=>'App\Controllers\API'],function($routes){
 	$routes->get('grados', 'Grados::index');
