@@ -14,13 +14,8 @@ class RolModel extends Model
     protected $updatedField = 'updated_at';
 
     protected $validationRules  = [
-        'nombre'                => 'required|alpha_numeric_space|min_length[3]|max_length[45]',
+        'nombre'                => 'required|alpha_numeric_space|min_length[3]|max_length[45]'
       
-    ];
-    protected $validationMessages = [
-        'nombre' =>[
-            'required'      => 'Este campo es requerido'
-        ]
     ];
 
     protected $skipValidation = false;
