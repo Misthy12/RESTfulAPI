@@ -6,7 +6,8 @@ use CodeIgniter\RESTful\ResourceController;
 class Usuarios extends ResourceController
 {
     public function __construct(){
-        $this->model = $this->setModel(new UsuarioModel());
+		$this->model = $this->setModel(new UsuarioModel());
+		helper('secure_password');
     }
 	public function index()
 	{
@@ -17,7 +18,11 @@ class Usuarios extends ResourceController
 	public function create()
 	{
 		try {
-			$Usuario= $this->request->getJSON();
+			$Usuario = $this->request->getJSON();
+
+			$Usuario->password = hashPassword($Usuario->password);
+			//$newUser = ['nombre'=>$this->$Usuario['nombre'],'username'=>$Usuario['username'],'password'=>hashPassword($Usuario['password'])];
+
 			if($this->model->insert($Usuario)):
 				$Usuario->id = $this->model->insertID();
 				return $this->respondCreated($Usuario);
@@ -58,6 +63,7 @@ class Usuarios extends ResourceController
 				return $this->failNotFound('No se se ha encontrado un Usuario con id: ' .$id);
 			
 			$Usuario = $this->request->getJSON();
+			$Usuario->password = hashPassword($Usuario->password);
 			if($this->model->update($id,$Usuario)):
 				$Usuario->id= $id;
 				return $this->respondUpdated($Usuario);

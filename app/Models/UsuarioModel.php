@@ -16,7 +16,7 @@ class UsuarioModel extends Model
     protected $validationRules  = [
         'nombre'                => 'required|alpha_numeric_space|min_length[3]|max_length[65]',
         'username'              => 'required|alpha_numeric_space|min_length[3]|max_length[10]',
-        'password'              => 'required|alpha_numeric_space|min_length[5]|max_length[10]',
+        'password'              => 'required',
         'rol_id'                => 'required|is_valid_rol',
     ];
     protected $validationMessages = [
