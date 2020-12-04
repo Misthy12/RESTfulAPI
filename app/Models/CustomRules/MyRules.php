@@ -2,12 +2,18 @@
 namespace App\Models\CustomRules;
 use App\Models\ProfesorModel;
 use App\Models\GradoModel;
+use App\Models\RolModel;
 
 class MyRules {
 public function is_valid_profesor(int $id): bool{
     $model = new ProfesorModel();
     $profesor = $model->find($id);  
     return $profesor == null ? false : true;
+}
+public function is_valid_rol(int $id): bool{
+    $model = new RolModel();
+    $rol = $model->find($id);  
+    return $rol == null ? false : true;
 }
 public function is_valid_grado(int $id): bool{
     $model = new GradoModel();
