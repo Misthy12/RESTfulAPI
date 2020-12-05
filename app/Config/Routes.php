@@ -31,10 +31,10 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->post('/auth/login', 'Auth::index');
+$routes->post('/auth/login', 'Auth::login');
 
 //Consumo API
-$routes->group('api',['namespace'=>'App\Controllers\API'],function($routes){
+$routes->group('api',['namespace'=>'App\Controllers\API','filter'=> 'authFilter'],function($routes){
 	$routes->get('apigrado/getall', 'Apigrado::getall/$1');
 
 	//new route groups profesor

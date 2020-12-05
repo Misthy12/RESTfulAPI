@@ -4,5 +4,5 @@ function hashPassword($plainText){
 }
 
 function verifyPassword($plainText,$hash){
-    return password_verify($plainText,hash);
+    return password_verify($plainText,$hash);
 }

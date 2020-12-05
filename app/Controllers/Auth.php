@@ -1,5 +1,5 @@
 <?php namespace App\Controllers;
-use App\Model\UsuarioModel;
+use App\Models\UsuarioModel;
 use CodeIgniter\Api\ResponseTrait;
 use Config\Services;
 use Firebase\JWT\JWT;
