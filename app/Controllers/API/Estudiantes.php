@@ -6,17 +6,28 @@ use CodeIgniter\RESTful\ResourceController;
 class Estudiantes extends ResourceController
 {
     public function __construct(){
-        $this->model = $this->setModel(new EstudianteModel());
+		$this->model = $this->setModel(new EstudianteModel());
+		helper('access_rol');
     }
 	public function index()
 	{
-		$Estudiantes = $this->model->findAll();
+		try {
+			if (!validateAccess(array('Admin','Teacher'),$this->request->getServer('HTTP_AUTHORIZATION')))
+			return $this->failServerError('El Rol no tiene Acceso a este recurso');
 
-		return $this->respond($Estudiantes);
+			$Estudiantes = $this->model->findAll();
+			return $this->respond($Estudiantes);
+		} catch (\Throwable $th) {
+		return $this->failServerError('Ha ocurrido un error en el servidor');
+	}
+
 	}
 	public function create()
 	{
 		try {
+			if (!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+			return $this->failServerError('El Rol no tiene Acceso a este recurso');
+
 			$Estudiante= $this->request->getJSON();
 			if($this->model->insert($Estudiante)):
 				$Estudiante->id = $this->model->insertID();
@@ -33,8 +44,12 @@ class Estudiantes extends ResourceController
 	public function edit($id = null)
 	{
 		try {
+			if (!validateAccess(array('Admin','Teacher','Student'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
+			
+			
 			$Estudiante = $this->model->find($id);
 
 			if($Estudiante==null)
@@ -50,8 +65,12 @@ class Estudiantes extends ResourceController
 	public function update($id = null)
 	{
 		try {
+			if (!validateAccess(array('Admin',"Student"),$this->request->getServer('HTTP_AUTHORIZATION')))
+			return $this->failServerError('El Rol no tiene Acceso a este recurso');
+			
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
+			
 			$verificarEstudiante = $this->model->find($id);
 
 			if($verificarEstudiante==null)
@@ -73,6 +92,8 @@ class Estudiantes extends ResourceController
 	public function delete($id = null)
 	{
 		try {
+			if (!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			$verificarEstudiante = $this->model->find($id);

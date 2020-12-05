@@ -1,6 +1,7 @@
 <?php
 namespace App\Filters;
 
+use App\Models\RolModel;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -25,6 +26,12 @@ class AuthFilter implements FilterInterface{
             $jwt = $arr[1];
 
             JWT::decode($jwt,$key,['HS256']);
+
+            $rolModel = new RolModel();
+            $rol = $rolModel->find($jwt->data->rol);
+            if($rol== null)
+                return Services::response()->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED,'El rol del JWT es invalido');
+            return true;
         } 
         catch (ExpiredException $ee ) {
             return Services::response()->setStatusCode(ResponseInterface::HTTP_UNAUTHORIZED,'Su JWT ha expirado');

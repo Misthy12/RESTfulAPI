@@ -7,13 +7,21 @@ class Usuarios extends ResourceController
 {
     public function __construct(){
 		$this->model = $this->setModel(new UsuarioModel());
-		helper('secure_password');
+		helper('access_rol');
+
     }
 	public function index()
 	{
-		$Usuarios = $this->model->findAll();
+		try {
+			if(!validateAccess(array('Admin'),$this->$request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+			$Usuarios = $this->model->findAll();
+	
+			return $this->respond($Usuarios);
+		} catch (\Throwable $th) {
+			return $this->failServerError('Ha ocurrido un error en el servidor');
+		}
 
-		return $this->respond($Usuarios);
 	}
 	public function create()
 	{
