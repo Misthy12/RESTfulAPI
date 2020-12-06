@@ -8,6 +8,7 @@ class Profesores extends ResourceController
     public function __construct(){
         $this->model = $this->setModel(new ProfesorModel());
 		helper('access_rol');
+		helper('secure_password');
     }
 	public function index()
 	{

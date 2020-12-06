@@ -6,17 +6,29 @@ use CodeIgniter\RESTful\ResourceController;
 class Roles extends ResourceController
 {
     public function __construct(){
-        $this->model = $this->setModel(new RolModel());
+		$this->model = $this->setModel(new RolModel());
+		helper('access_rol');
+		helper('secure_password');
     }
 	public function index()
 	{
-		$Roles = $this->model->findAll();
-
-		return $this->respond($Roles);
+		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+			
+			$Roles = $this->model->findAll();
+			return $this->respond($Roles);
+		} catch (\Throwable $th) {
+			return $this->failServerError('Ha ocurrido un error en el servidor');
+		}
+		
 	}
 	public function create()
 	{
 		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+
 			$Rol= $this->request->getJSON();
 			if($this->model->insert($Rol)):
 				$Rol->id = $this->model->insertID();
@@ -33,6 +45,9 @@ class Roles extends ResourceController
 	public function edit($id = null)
 	{
 		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			$Rol = $this->model->find($id);
@@ -50,6 +65,9 @@ class Roles extends ResourceController
 	public function update($id = null)
 	{
 		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			$verificarRol = $this->model->find($id);
@@ -73,6 +91,9 @@ class Roles extends ResourceController
 	public function delete($id = null)
 	{
 		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+				
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			$verificarRol = $this->model->find($id);

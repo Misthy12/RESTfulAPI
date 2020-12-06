@@ -8,6 +8,7 @@ class Estudiantes extends ResourceController
     public function __construct(){
 		$this->model = $this->setModel(new EstudianteModel());
 		helper('access_rol');
+		helper('secure_password');
     }
 	public function index()
 	{

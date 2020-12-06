@@ -27,8 +27,10 @@ class Usuarios extends ResourceController
 	public function create()
 	{
 		try {
-			$Usuario = $this->request->getJSON();
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
 
+			$Usuario = $this->request->getJSON();
 			$Usuario->password = hashPassword($Usuario->password);
 			//$newUser = ['nombre'=>$this->$Usuario['nombre'],'username'=>$Usuario['username'],'password'=>hashPassword($Usuario['password'])];
 
@@ -47,6 +49,9 @@ class Usuarios extends ResourceController
 	public function edit($id = null)
 	{
 		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			$Usuario = $this->model->find($id);
@@ -64,6 +69,9 @@ class Usuarios extends ResourceController
 	public function update($id = null)
 	{
 		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			$verificarUsuario = $this->model->find($id);
@@ -88,6 +96,9 @@ class Usuarios extends ResourceController
 	public function delete($id = null)
 	{
 		try {
+			if(!validateAccess(array('Admin'),$this->request->getServer('HTTP_AUTHORIZATION')))
+				return $this->failServerError('El Rol no tiene Acceso a este recurso');
+				
 			if($id==null)
 				return $this->failValidationError('No se se ha pasado ID Valido');
 			$verificarUsuario = $this->model->find($id);
